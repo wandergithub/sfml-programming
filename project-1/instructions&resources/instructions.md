@@ -7,4 +7,4 @@
 ### Config file(make sure program works even when adding and removing new shapes config):
 ![Alt text](image-2.png)
 ### Compile command:
-`g++ ./*.cpp -std=c++17 -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio`
+`g++ ./*.cpp -std=c++17 -o=game -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio`
