@@ -1,3 +1,4 @@
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
 #include <fstream>
@@ -27,17 +28,28 @@ class App {
                 continue;
             }
             
-        }
+        };
         
-    }
+    };
+
+    void loadFont()
+    {
+        sf::Font font;
+        if (!font.loadFromFile("fonts/tech.ttf"))
+        {
+            std::cerr << "Could not load font\n";
+            exit(-1);
+        };
+    };
 
 public:
 
-    // Game initizlization
     App()
     {
         loadConfig("config.txt");
+        loadFont();
         sf::Window window(sf::VideoMode(w_width, w_height), "Project 1");
+        window.setFramerateLimit(60);
 
         while (window.isOpen())
         {
@@ -46,11 +58,11 @@ public:
             {
                 if (event.type == sf::Event::Closed)
                     window.close();
-            }
+            };
             
-        } 
+        };
         // std::cout << w_width << " " << w_height << "\n";
-    }
+    };
 };
 
 

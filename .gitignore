@@ -1,6 +1,4 @@
 .vscode/
-a.out
-*.txt
-config.txt
+*.out
 project-1/.vscode/
-project-1/.vscode/
+project-1/*.out
