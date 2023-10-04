@@ -9,8 +9,10 @@ class Circle : public sf::CircleShape {
 
 public:
     float sx, sy, radio;
+    sf::Text &text;
 
-    Circle(float radio) : sf::CircleShape(radio) {
+    Circle(float radio, sf::Text &refText) 
+        : sf::CircleShape(radio), text(refText) {
         this->radio = radio;
     }
 };
@@ -18,8 +20,11 @@ public:
 class Rectangle : public sf::RectangleShape {
 public:
     float sx, sy;
+    sf::Text &text;
+
     sf::Vector2f dimentions;
-    Rectangle(sf::Vector2f vector) : sf::RectangleShape(vector) {
+    Rectangle(sf::Vector2f vector, sf::Text &refText) 
+        : sf::RectangleShape(vector), text(refText) {
         dimentions = vector;
     }
 };
@@ -29,7 +34,7 @@ class App {
     sf::Font font;
     std::vector<Circle> circles;
     std::vector<Rectangle> rectangles;
-
+    int fontSize, fr, fg, fb;
     void loadConfig(const std::string& filename)
     {
         std::fstream config_file(filename);
@@ -43,35 +48,51 @@ class App {
             }
             else if (type == std::string("Font"))
             {   std::string fontPath;
-                config_file >> fontPath;
+                config_file >> fontPath >> fontSize >> fr >> fg >> fb;
                 loadFont(fontPath);
             }
             else if (type == std::string("Circle"))
             {
+                sf::Text text;
+                text.setFont(font);
+
                 std::string name;
                 float x, y, sx, sy, radio;
                 int r, g, b;
                 config_file >> name >> x >> y >> sx >> sy >> r >> g >> b >> radio;
-                Circle circle(radio);
+
+                text.setString(name);
+                text.setCharacterSize(fontSize);
+                text.setFillColor(sf::Color(fr, fg, fb));
+                text.setPosition(x, y);
+                
+                Circle circle(radio, text);
                 circle.setFillColor(sf::Color(r, g, b));
                 circle.sx = sx;
                 circle.sy = sy;
                 circle.setPosition(x, y);
-
                 circles.push_back(circle);
             }
             else if (type == std::string("Rectangle"))
             {
+                sf::Text text;
+                text.setFont(font);
+
                 std::string name;
                 float x, y, sx, sy, w, h;
                 int r, g, b;
                 config_file >> name >> x >> y >> sx >> sy >> r >> g >> b >> w >> h;
-                Rectangle rectangle(sf::Vector2f(w, h));
+
+                text.setString(name);
+                text.setCharacterSize(fontSize);
+                text.setFillColor(sf::Color(fr, fg, fb));
+                text.setPosition(x, y);
+                Rectangle rectangle(sf::Vector2f(w, h), text);
+
                 rectangle.setFillColor(sf::Color(r, g, b));
                 rectangle.sx = sx;
                 rectangle.sy = sy;
                 rectangle.setPosition(x, y);
-
                 rectangles.push_back(rectangle);
             }
             
