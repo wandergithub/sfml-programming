@@ -5,11 +5,30 @@
 #include <string>
 #include <vector>
 
+class Circle : public sf::CircleShape {
+
+public:
+    float sx, sy;
+
+    Circle(float radius) : sf::CircleShape(radius) {
+
+    }
+};
+
+class Rectangle : public sf::RectangleShape {
+public:
+    float sx, sy;
+
+    Rectangle(sf::Vector2f vector) : sf::RectangleShape(vector) {
+
+    }
+};
+
 class App {
     int w_width, w_height;
     sf::Font font;
-    std::vector<sf::CircleShape> circles;
-    std::vector<sf::RectangleShape> rectangles;
+    std::vector<Circle> circles;
+    std::vector<Rectangle> rectangles;
 
     void loadConfig(const std::string& filename)
     {
@@ -33,8 +52,11 @@ class App {
                 float x, y, sx, sy, radio;
                 int r, g, b;
                 config_file >> name >> x >> y >> sx >> sy >> r >> g >> b >> radio;
-                sf::CircleShape circle(radio);
+                Circle circle(radio);
                 circle.setFillColor(sf::Color(r, g, b));
+                circle.sx = sx;
+                circle.sy = sy;
+                circle.setPosition(x, y);
 
                 circles.push_back(circle);
             }
@@ -44,8 +66,12 @@ class App {
                 float x, y, sx, sy, w, h;
                 int r, g, b;
                 config_file >> name >> x >> y >> sx >> sy >> r >> g >> b >> w >> h;
-                sf::RectangleShape rectangle(sf::Vector2f(w, h));
-                
+                Rectangle rectangle(sf::Vector2f(w, h));
+                rectangle.setFillColor(sf::Color(r, g, b));
+                rectangle.sx = sx;
+                rectangle.sy = sy;
+                rectangle.setPosition(x, y);
+
                 rectangles.push_back(rectangle);
             }
             
@@ -90,16 +116,8 @@ public:
                 window.draw(rectangle);
             }
 
-            sf::Text text;
-            text.setFont(font);
-            text.setString("Hello World");
-            text.setCharacterSize(24);
-            text.setFillColor(sf::Color::Red);
-            window.draw(text);
-
             window.display();
         };
-        // std::cout << w_width << " " << w_height << "\n";
     };
 };
 
