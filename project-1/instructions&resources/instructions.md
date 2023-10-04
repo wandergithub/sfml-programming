@@ -8,3 +8,5 @@
 ![Alt text](image-2.png)
 ### Compile command:
 `g++ ./*.cpp -std=c++17 -o app.out -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio`
+### run:
+`./app.out`
