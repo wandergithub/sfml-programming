@@ -8,19 +8,19 @@
 class Circle : public sf::CircleShape {
 
 public:
-    float sx, sy;
+    float sx, sy, radio;
 
-    Circle(float radius) : sf::CircleShape(radius) {
-
+    Circle(float radio) : sf::CircleShape(radio) {
+        this->radio = radio;
     }
 };
 
 class Rectangle : public sf::RectangleShape {
 public:
     float sx, sy;
-
+    sf::Vector2f dimentions;
     Rectangle(sf::Vector2f vector) : sf::RectangleShape(vector) {
-
+        dimentions = vector;
     }
 };
 
@@ -94,7 +94,6 @@ public:
     {
         loadConfig("config.txt");
         sf::RenderWindow window(sf::VideoMode(w_width, w_height), "Project 1");
-        window.setFramerateLimit(60);
 
         while (window.isOpen())
         {
@@ -107,12 +106,33 @@ public:
             
             window.clear(sf::Color::Black);
 
-            // Printing circles
-            for (sf::CircleShape circle : circles) {
+            // Handling circles
+            for (Circle& circle : circles) {
+                if (circle.getPosition().x <= 0 || (circle.getPosition().x  + (circle.radio * 2)) >= w_width)
+                {
+                    circle.sx *= (-1);
+                }
+
+                if (circle.getPosition().y <= 0 || (circle.getPosition().y + (circle.radio * 2)) >= w_height)
+                {
+                    circle.sy *= (-1);
+                }
+
+                circle.setPosition(circle.getPosition().x + circle.sx, circle.getPosition().y + circle.sy);
                 window.draw(circle);
             }
-            // Printing rectangles
-            for (sf::RectangleShape rectangle : rectangles) {
+            // Handling rectangles
+            for (Rectangle& rectangle : rectangles) {
+                if (rectangle.getPosition().x <= 0 || (rectangle.getPosition().x + rectangle.dimentions.x) >= w_width)
+                {
+                    rectangle.sx *= -1;
+                }
+                if (rectangle.getPosition().y <= 0 || (rectangle.getPosition().y + rectangle.dimentions.y) >= w_height)
+                {
+                    rectangle.sy *= -1;
+                }
+                
+                rectangle.move(rectangle.sx, rectangle.sy);
                 window.draw(rectangle);
             }
 
