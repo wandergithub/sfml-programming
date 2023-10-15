@@ -2,3 +2,4 @@
 *.out
 project-1/.vscode/
 project-1/*.out
+build
